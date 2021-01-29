@@ -14,6 +14,6 @@ spring:
                                       #例如 请求localhost:7000/product-serv/product/1
                                       #gateway转发是 localhost:8081/product-serv/product/1
                                       #zuul转发是 localhost:8081/product/1
-          filter:                     #过滤器 （在传递的过程中 对请求进行处理）
+          filters:                     #过滤器 （在传递的过程中 对请求进行处理）
             - StripPrefix=1           #在请求转发之前去掉一层路径 去掉之后就是 localhost:8081/product/1
 
