@@ -3,17 +3,30 @@ spring:
   application:
     name: api-gateway
   cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
     gateway:
+      discovery:
+        locator:
+          #使gateway可以发现nacos中的服务
+          enabled: true
       #路由数组（当请求满足什么样的条件的时候转发到哪个微服务上）
       routes:
-        - id: product_route           #当前路由的表示要求，要求唯一 .默认是UUID
-          uri: http://localhost:8081  #指请求最终要被转发的地址
-          order: 1                    #路由的优先级，数字越小，代表路由的优先级越高
-          predicates:                 #断言：条件判断，返回值是boolean （转发请求要满足什么样的条件）
-            - Path=/product-serv/**   #当请求路径满足path指定的规则时，此路由信息才会正常转发
-                                      #例如 请求localhost:7000/product-serv/product/1
-                                      #gateway转发是 localhost:8081/product-serv/product/1
-                                      #zuul转发是 localhost:8081/product/1
-          filters:                     #过滤器 （在传递的过程中 对请求进行处理）
-            - StripPrefix=1           #在请求转发之前去掉一层路径 去掉之后就是 localhost:8081/product/1
-
+        #当前路由的表示要求，要求唯一 .默认是UUID
+        - id: product_route
+          #指请求最终要被转发的地址   lb代表的是负载均衡。后面的地址是nacos中的服务名（各微服务配置中的Spring.application.name）
+          uri: lb://service-product
+          #路由的优先级，数字越小，代表路由的优先级越高
+          order: 1
+          #断言：条件判断，返回值是boolean （转发请求要满足什么样的条件）
+          #当请求路径满足path指定的规则时，此路由信息才会正常转发
+          #例如 请求localhost:7000/product-serv/product/1
+          #gateway转发是 localhost:8081/product-serv/product/1
+          #zuul转发是 localhost:8081/product/1
+          predicates:
+            - Path=/product-serv/**
+          #过滤器 （在传递的过程中 对请求进行处理）
+          filters:
+            #在请求转发之前去掉一层路径 去掉之后就是 localhost:8081/product/1
+            - StripPrefix=1
