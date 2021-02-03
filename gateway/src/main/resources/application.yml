@@ -26,7 +26,23 @@ spring:
           #zuul转发是 localhost:8081/product/1
           predicates:
             - Path=/product-serv/**
+            #限制请求时间在2022-02-02之前
+            #- Before=2022-02-02T00:00:00.000+08:00
+            #限制请求的方式是GET
+            #- Method=GET
+            #自定义断言age 在18-60之间可以访问
+            #- Age=18,60
           #过滤器 （在传递的过程中 对请求进行处理）
           filters:
             #在请求转发之前去掉一层路径 去掉之后就是 localhost:8081/product/1
+            - StripPrefix=1
+            #设置返回响应码(局部)
+            # - SetStatus=250
+            #自定义缓存filter(局部)
+            # - Log=true,false
+        - id: order_route
+          uri: lb://service-order
+          predicates:
+            - Path=/order-serv/**
+          filters:
             - StripPrefix=1

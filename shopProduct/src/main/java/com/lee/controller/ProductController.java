@@ -34,4 +34,44 @@ public class ProductController {
         log.info("query success,Product:{}", JSON.toJSONString(product));
         return product;
     }
+
+    /**
+     * Api限流测试
+     *
+     * @return String
+     */
+    @RequestMapping("/product/api1/demo1")
+    private String demo1() {
+        return "demo1";
+    }
+
+    /**
+     * Api限流测试
+     *
+     * @return String
+     */
+    @RequestMapping("/product/api1/demo2")
+    private String demo2() {
+        return "demo1";
+    }
+
+    /**
+     * Api限流测试
+     *
+     * @return String
+     */
+    @RequestMapping("/product/api2/demo1")
+    private String demo3() {
+        return "demo1";
+    }
+
+    /**
+     * Api限流测试
+     *
+     * @return String
+     */
+    @RequestMapping("/product/api2/demo2")
+    private String demo4() {
+        return "demo1";
+    }
 }
