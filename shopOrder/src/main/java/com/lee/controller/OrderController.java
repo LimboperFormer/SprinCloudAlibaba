@@ -49,23 +49,16 @@ public class OrderController {
 
 
         log.info("query success,pid:{},product:{}", pid, JSON.toJSONString(product));
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            log.trace(e.getMessage());
-        }
         Order order = new Order();
         order.setUserId(1);
         order.setUsername("test user");
 
         order.setProductId(pid);
-        assert product != null;
         order.setProductName(product.getName());
         order.setProductPrice(product.getPrice());
         order.setNumber(1);
 
-//        orderService.createOrder(order);
+        orderService.createOrder(order);
 
         log.info("create Order Success,orderMessage:{}", JSON.toJSONString(order));
 
